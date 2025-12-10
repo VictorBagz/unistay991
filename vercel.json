@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/article/:articleId",
+      "destination": "/api/article?articleId=:articleId"
+    }
+  ]
+}

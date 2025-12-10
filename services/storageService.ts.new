@@ -1,0 +1,110 @@
+import { StorageError } from '@supabase/storage-js';
+import { supabase } from './supabase';
+
+const STORAGE_BUCKET = 'uploads';
+
+type ContentType = 'hostels' | 'events' | 'news' | 'jobs';
+
+function getFolder(type: ContentType): string {
+    return type; // The folder name is the same as the content type
+}
+
+export const storageService = {
+    async uploadImage(file: File, contentType: ContentType, folder: string): Promise<string> {
+        try {
+            if (!file || !(file instanceof File)) {
+                throw new Error('Invalid file provided');
+            }
+
+            // Validate file type and size
+            if (!file.type.startsWith('image/')) {
+                throw new Error('File must be an image');
+            }
+
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            if (file.size > maxSize) {
+                throw new Error('File size must be less than 5MB');
+            }
+
+            const fileExt = file.name.split('.').pop()?.toLowerCase();
+            if (!fileExt || !['jpg', 'jpeg', 'png', 'gif', 'webp', 'avif'].includes(fileExt)) {
+                throw new Error('Invalid file type. Supported types: jpg, jpeg, png, gif, webp, avif');
+            }
+
+            // Create a unique filename
+            const timestamp = new Date().getTime();
+            const randomString = Math.random().toString(36).substring(2);
+            const fileName = `${timestamp}-${randomString}.${fileExt}`;
+            
+            // Construct the full path
+            const folderPath = getFolder(contentType);
+            const uploadPath = folder ? `${folderPath}/${folder}/${fileName}` : `${folderPath}/${fileName}`;
+
+            // Upload the file with proper content type
+            const { data, error } = await supabase.storage
+                .from(STORAGE_BUCKET)
+                .upload(uploadPath, file, {
+                    cacheControl: '3600',
+                    upsert: true,
+                    contentType: file.type
+                });
+
+            if (error) {
+                throw new Error(`Failed to upload image: ${error.message}`);
+            }
+
+            if (!data?.path) {
+                throw new Error('Upload succeeded but no path returned');
+            }
+
+            // Get the public URL
+            const { data: { publicUrl } } = supabase.storage
+                .from(STORAGE_BUCKET)
+                .getPublicUrl(data.path);
+
+            if (!publicUrl) {
+                throw new Error('Failed to get public URL for uploaded file');
+            }
+
+            return publicUrl;
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown upload error';
+            console.error('Image upload error:', message);
+            throw new Error(message);
+        }
+    },
+
+    async uploadMultipleImages(files: File[], contentType: ContentType, folder: string): Promise<string[]> {
+        const uploadPromises = files.map(file => this.uploadImage(file, contentType, folder));
+        return Promise.all(uploadPromises);
+    },
+
+    async deleteImage(url: string): Promise<void> {
+        try {
+            // Extract the path from the URL
+            const urlParts = url.split('/');
+            const bucketIndex = urlParts.indexOf(STORAGE_BUCKET);
+            
+            if (bucketIndex === -1) {
+                throw new Error('Invalid storage URL format');
+            }
+
+            const path = urlParts.slice(bucketIndex + 1).join('/');
+            if (!path) {
+                throw new Error('Invalid image path');
+            }
+
+            const { error } = await supabase.storage
+                .from(STORAGE_BUCKET)
+                .remove([path]);
+
+            if (error) {
+                throw new Error(`Failed to delete image: ${error.message}`);
+            }
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Unknown deletion error';
+            console.error('Image deletion error:', message);
+            throw new Error(message);
+        }
+    }
+};
