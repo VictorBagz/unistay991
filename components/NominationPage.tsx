@@ -104,41 +104,92 @@ const NominationPage: React.FC<NominationPageProps> = ({ onBack, universities })
         />
 
         {/* Info Section */}
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-white rounded-xl p-8 shadow-md border-l-4 border-blue-500">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <i className="fas fa-star text-xl text-blue-600"></i>
+        <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Be Recognized Card */}
+          <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            {/* Header Image */}
+            <div className="relative h-40 bg-blue-600 flex items-center justify-center overflow-hidden">
+              <img 
+                src="/images/services/bbb2.jpg" 
+                alt="Recognition"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-blue-600/30"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 bg-blue-500/40 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                  <i className="fas fa-star text-4xl text-white"></i>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Be Recognized</h3>
             </div>
-            <p className="text-gray-600 text-sm">
-              Nominate students who shine bright in the community and deserve to be in the spotlight.
-            </p>
+
+            {/* Content */}
+            <div className="p-6">
+              <h3 className="text-lg font-black text-gray-900 mb-2">Be Recognized</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                Nominate students who shine bright in the community and deserve to be in the spotlight.
+              </p>
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-xs text-blue-600 font-semibold mt-3">✨ Recognition</p>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white rounded-xl p-8 shadow-md border-l-4 border-indigo-500">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                <i className="fas fa-crown text-xl text-indigo-600"></i>
+          {/* Get Featured Card */}
+          <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            {/* Header Image */}
+            <div className="relative h-40 bg-amber-500 flex items-center justify-center overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=300&fit=crop" 
+                alt="Featured"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-amber-500/30"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 bg-amber-500/40 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                  <i className="fas fa-crown text-4xl text-white"></i>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Get Featured</h3>
             </div>
-            <p className="text-gray-600 text-sm">
-              Top nominees will be featured as MCM (Man Crush Monday) or WCW (Woman Crush Wednesday) winners.
-            </p>
+
+            {/* Content */}
+            <div className="p-6">
+              <h3 className="text-lg font-black text-gray-900 mb-2">Get Featured</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                Top nominees will be featured as MCM (Man Crush Monday) or WCW (Woman Crush Wednesday) winners.
+              </p>
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-xs text-amber-600 font-semibold mt-3">👑 Winners</p>
+              </div>
+            </div>
           </div>
 
-          <div className="bg-white rounded-xl p-8 shadow-md border-l-4 border-purple-500">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <i className="fas fa-heart text-xl text-purple-600"></i>
+          {/* Community Vote Card */}
+          <div className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            {/* Header Image */}
+            <div className="relative h-40 bg-purple-600 flex items-center justify-center overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=500&h=300&fit=crop" 
+                alt="Community Vote"
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 bg-purple-600/30"></div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-20 h-20 bg-purple-500/40 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                  <i className="fas fa-heart text-4xl text-white"></i>
+                </div>
               </div>
-              <h3 className="text-lg font-bold text-gray-900">Community Vote</h3>
             </div>
-            <p className="text-gray-600 text-sm">
-              All community members can vote for their favorite nominees throughout the month.
-            </p>
+
+            {/* Content */}
+            <div className="p-6">
+              <h3 className="text-lg font-black text-gray-900 mb-2">Community Vote</h3>
+              <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                All community members can vote for their favorite nominees throughout the month.
+              </p>
+              <div className="pt-2 border-t border-gray-100">
+                <p className="text-xs text-purple-600 font-semibold mt-3">🗳️ Voting</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
