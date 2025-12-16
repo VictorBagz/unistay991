@@ -678,7 +678,8 @@ const App = () => {
                 studentSpotlightRef={studentSpotlightRef}
                 confessionHandler={confessionHandler}
               />
-              <Services services={SERVICES} selectedUniversity={selectedUniversity} onServiceSelect={handleServiceSelect} />
+              {/* Services section hidden temporarily */}
+              {/* <Services services={SERVICES} selectedUniversity={selectedUniversity} onServiceSelect={handleServiceSelect} /> */}
             </>
           )}
           
@@ -746,13 +747,14 @@ const App = () => {
               />
           )}
 
-          {currentView === 'service' && selectedService && (
+          {/* ServicePage hidden temporarily */}
+          {/* {currentView === 'service' && selectedService && (
             <ServicePage
               service={selectedService}
               university={selectedUniversity}
               onNavigateHome={() => handleNavigation('main')}
             />
-          )}
+          )} */}
 
         </main>
 
