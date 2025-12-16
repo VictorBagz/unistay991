@@ -261,6 +261,20 @@ const App = () => {
       }
     };
 
+    // COMMENTED OUT - Services section disabled for later rollout
+    // const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    //   const user = formatUser(session?.user || null);
+    //   if (isSubscribed) {
+    //     setCurrentUser(user);
+    //     setIsAdmin(user?.email === 'admin@unistay.com' || user?.email === 'victorbaguma34@gmail.com' || user?.email === 'drilebaroy33@gmail.com');
+    //     
+    //     if (!user) {
+    //       setSavedHostels(new Set());
+    //       setNotifications([]);
+    //     }
+    //   }
+    // });
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       const user = formatUser(session?.user || null);
       if (isSubscribed) {
