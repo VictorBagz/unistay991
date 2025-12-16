@@ -19,6 +19,7 @@ import JobsPage from './components/JobsPage';
 import AuthPage from './components/AuthPage';
 import AdminDashboard from './components/AdminDashboard';
 import ProfilePage from './components/ProfilePage';
+import NominationPage from './components/NominationPage';
 import Spinner from './components/Spinner';
 import Notifier from './components/Notifier';
 import { NotificationProvider } from './hooks/useNotifier';
@@ -41,7 +42,7 @@ import {
 } from './services/dbService';
 import { contactService, contactHandler } from './services/contactService';
 
-type AppView = 'main' | 'roommateFinder' | 'roommateMatch' | 'blog' | 'newsArticle' | 'events' | 'jobs' | 'auth' | 'admin' | 'profile' | 'service' | 'spotlight' | 'services';
+type AppView = 'main' | 'roommateFinder' | 'roommateMatch' | 'blog' | 'newsArticle' | 'events' | 'jobs' | 'auth' | 'admin' | 'profile' | 'service' | 'spotlight' | 'spotlightNomination' | 'services';
 
 
 const App = () => {
@@ -668,6 +669,7 @@ const App = () => {
                 onNavigateToBlog={() => handleNavigation('blog')}
                 onNavigateToEvents={() => handleNavigation('events')}
                 onNavigateToJobs={() => handleNavigation('jobs')}
+                onNavigateToNomination={() => handleNavigation('spotlightNomination')}
                 user={currentUser}
                 onNavigate={handleNavigation}
                 deals={deals}
@@ -745,6 +747,13 @@ const App = () => {
                   confessionHandler={confessionHandler}
                   allProfiles={roommateProfiles}
               />
+          )}
+
+          {currentView === 'spotlightNomination' && (
+            <NominationPage
+              onBack={() => handleNavigation('main')}
+              universities={UNIVERSITIES}
+            />
           )}
 
           {/* ServicePage hidden temporarily */}

@@ -425,7 +425,7 @@ const LostAndFoundPanel = ({ items }: { items: LostItem[] }) => {
   );
 };
 
-const StudentSpotlightPanel = ({ items, user }: { items: StudentSpotlight[], user: User | null }) => {
+const StudentSpotlightPanel = ({ items, user, onNavigateToNomination }: { items: StudentSpotlight[], user: User | null, onNavigateToNomination?: () => void }) => {
   const [votes, setVotes] = React.useState<Record<string, number>>({});
   const [hasVoted, setHasVoted] = React.useState<Set<string>>(new Set());
   const [userVotedMale, setUserVotedMale] = React.useState(false);
@@ -850,6 +850,28 @@ const StudentSpotlightPanel = ({ items, user }: { items: StudentSpotlight[], use
         )}
       </div>
 
+      {/* Nomination Section */}
+      {onNavigateToNomination && (
+        <div className="border-t pt-16">
+          <div className="max-w-3xl mx-auto text-center">
+            <h3 className="text-3xl font-black text-gray-900 mb-3">
+              ⭐ Know Someone Worthy?
+            </h3>
+            <p className="text-gray-600 text-lg mb-8">
+              Don't see your favorite student here? Nominate them for MCM or WCW and help them shine in the spotlight!
+            </p>
+            <button
+              onClick={onNavigateToNomination}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 text-white rounded-xl font-bold text-lg hover:from-blue-600 hover:via-indigo-600 hover:to-purple-700 transition-all duration-300 hover:shadow-xl hover:scale-105 group"
+            >
+              <i className="fas fa-edit group-hover:scale-110 transition-transform"></i>
+              Nominate a Student
+              <i className="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Student Detail Modal */}
       {selectedStudent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
@@ -1141,6 +1163,7 @@ interface CommunityHubProps {
   onNavigateToBlog: () => void;
   onNavigateToEvents: () => void;
   onNavigateToJobs: () => void;
+  onNavigateToNomination?: () => void;
   user: User | null;
   onNavigate: (view: AppView) => void;
   deals?: Deal[];
@@ -1158,7 +1181,7 @@ interface CommunityHubProps {
   };
 }
 
-const CommunityHub = forwardRef<HTMLDivElement, CommunityHubProps>(({ news, events, jobs, universities, onNavigateToBlog, onNavigateToEvents, onNavigateToJobs, user, onNavigate, deals = [], lostItems = [], studentSpotlights = [], confessions = [], studentDealsRef, studentSpotlightRef, confessionHandler }: CommunityHubProps, ref) => {
+const CommunityHub = forwardRef<HTMLDivElement, CommunityHubProps>(({ news, events, jobs, universities, onNavigateToBlog, onNavigateToEvents, onNavigateToJobs, onNavigateToNomination, user, onNavigate, deals = [], lostItems = [], studentSpotlights = [], confessions = [], studentDealsRef, studentSpotlightRef, confessionHandler }: CommunityHubProps, ref) => {
   const [activeTab, setActiveTab] = useState('News');
   const [sectionRef, isVisible] = useScrollObserver<HTMLElement>();
   const [selectedEvent, setSelectedEvent] = React.useState<Event | null>(null);
@@ -1280,7 +1303,7 @@ const CommunityHub = forwardRef<HTMLDivElement, CommunityHubProps>(({ news, even
               </div>
             </div>
             
-            <StudentSpotlightPanel items={studentSpotlights} user={user} />
+            <StudentSpotlightPanel items={studentSpotlights} user={user} onNavigateToNomination={onNavigateToNomination} />
           </div>
         )}
 
