@@ -85,7 +85,7 @@ const NominationPage: React.FC<NominationPageProps> = ({ onBack, universities })
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-12 px-6">
+    <div className="min-h-screen bg-gradient-to-br from-unistay-yellow via-blue-900 to-unistay-navy py-12 px-6">
       <div className="max-w-5xl mx-auto">
         {/* Back Button */}
         <button

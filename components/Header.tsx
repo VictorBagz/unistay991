@@ -152,14 +152,31 @@ interface HeaderProps {
 
 const Header = ({ onNavigate, currentView, user, isAdmin, onLogout, notifications, onMarkNotificationsAsRead, onScrollToContact, onScrollToSpotlight, onScrollToServices }: HeaderProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const [communityHubDropdownOpen, setCommunityHubDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setCommunityHubDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+    
     const navLinks: { text: string; view?: AppView; action?: () => void }[] = [
         { text: 'Hostels', view: 'main' },
         { text: 'Roommates', action: () => onNavigate('roommateMatch') },
-        { text: 'Services', action: onScrollToServices },
-        { text: 'Spotlight', action: onScrollToSpotlight },
+        { text: 'Community Hub', action: onScrollToSpotlight },
         { text: 'Contact Us', action: onScrollToContact },
     ];
+
+  const communityHubLinks = [
+    { text: 'News', action: () => onNavigate('blog') },
+    { text: 'Events', action: () => onNavigate('events') },
+    { text: 'Jobs', action: () => onNavigate('jobs') },
+  ];
 
   const isActive = (view: AppView) => {
       if(currentView === 'main' && view === 'main') return true;
@@ -186,17 +203,66 @@ const Header = ({ onNavigate, currentView, user, isAdmin, onLogout, notification
           </div>
           <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((item) => (
-              <button 
-                key={item.text} 
-                onClick={() => item.action ? item.action() : (item.view && onNavigate(item.view))} 
-                className={`font-medium transition-all duration-200 px-1 pb-2 pt-1 border-b-2 ${
-                  item.view && isActive(item.view)
-                    ? 'text-unistay-yellow border-unistay-yellow'
-                    : 'border-transparent hover:text-unistay-yellow'
-                }`}
-              >
-                {item.text}
-              </button>
+              <div key={item.text} className="relative">
+                {item.text === 'Community Hub' ? (
+                  <div 
+                    ref={dropdownRef}
+                    onMouseEnter={() => setCommunityHubDropdownOpen(true)}
+                    onMouseLeave={() => setCommunityHubDropdownOpen(false)}
+                    className="relative"
+                  >
+                    <button 
+                      onClick={() => item.action && item.action()}
+                      className={`font-medium transition-all duration-200 px-1 pb-2 pt-1 border-b-2 flex items-center gap-1 ${
+                        item.view && isActive(item.view)
+                          ? 'text-unistay-yellow border-unistay-yellow'
+                          : 'border-transparent hover:text-unistay-yellow'
+                      }`}
+                    >
+                      {item.text}
+                      <i className={`fas fa-chevron-down text-xs transition-transform duration-300 ${communityHubDropdownOpen ? 'rotate-180' : ''}`}></i>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {communityHubDropdownOpen && (
+                      <div className="absolute left-0 mt-0 w-40 bg-white rounded-lg shadow-xl z-40 overflow-hidden animate-fade-in">
+                        {communityHubLinks.map((link, index) => (
+                          <button
+                            key={link.text}
+                            onClick={() => {
+                              link.action();
+                              setCommunityHubDropdownOpen(false);
+                            }}
+                            className={`w-full text-left px-4 py-3 text-unistay-navy font-medium hover:bg-unistay-yellow/10 transition-colors ${
+                              index !== communityHubLinks.length - 1 ? 'border-b border-gray-100' : ''
+                            }`}
+                          >
+                            <div className="flex items-center gap-2">
+                              <i className={`fas ${
+                                link.text === 'News' ? 'fa-newspaper' : 
+                                link.text === 'Events' ? 'fa-calendar-alt' : 
+                                'fa-briefcase'
+                              } text-unistay-yellow`}></i>
+                              {link.text}
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <button 
+                    onClick={() => item.action ? item.action() : (item.view && onNavigate(item.view))} 
+                    className={`font-medium transition-all duration-200 px-1 pb-2 pt-1 border-b-2 ${
+                      item.view && isActive(item.view)
+                        ? 'text-unistay-yellow border-unistay-yellow'
+                        : 'border-transparent hover:text-unistay-yellow'
+                    }`}
+                  >
+                    {item.text}
+                  </button>
+                )}
+              </div>
             ))}
           </nav>
           <div className="flex items-center space-x-4">
