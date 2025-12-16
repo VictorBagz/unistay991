@@ -1255,8 +1255,8 @@ const CommunityHub = forwardRef<HTMLDivElement, CommunityHubProps>(({ news, even
           </div>
         )}
 
-        {/* Lost and Found Section */}
-        {lostItems && lostItems.length > 0 && (
+        {/* Lost and Found Section - HIDDEN */}
+        {false && lostItems && lostItems.length > 0 && (
           <div className={`mt-16 transition-all duration-700 delay-400 ${isVisible ? 'opacity-100' : 'opacity-100'}`}>
             <div className="mb-10">
               <h3 className="text-2xl font-bold text-unistay-navy mb-2">🔍 Lost & Found</h3>
