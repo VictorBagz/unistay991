@@ -103,7 +103,7 @@ const ProfilePage = ({
     };
     
     return (
-        <div className="bg-gray-100 min-h-screen">
+        <div className="min-h-screen" style={{ background: 'linear-gradient(135deg, #ffd700 0%, #0047ab 100%)' }}>
              <header className="bg-white shadow-sm sticky top-0 z-40">
                 <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
                     <h1 className="text-3xl font-bold text-unistay-navy">My Profile</h1>

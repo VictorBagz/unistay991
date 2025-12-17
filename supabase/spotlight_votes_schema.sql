@@ -31,26 +31,6 @@ CREATE INDEX IF NOT EXISTS idx_spotlight_votes_student_id ON public.spotlight_vo
 CREATE INDEX IF NOT EXISTS idx_spotlight_votes_user_id ON public.spotlight_votes(user_id);
 CREATE INDEX IF NOT EXISTS idx_spotlight_votes_timestamp ON public.spotlight_votes("timestamp");
 
--- 5) Row Level Security (RLS) policies
-ALTER TABLE public.spotlight_votes ENABLE ROW LEVEL SECURITY;
-
--- Allow anyone to SELECT votes (public read)
-CREATE POLICY "public_select_spotlight_votes" ON public.spotlight_votes
-  FOR SELECT
-  USING (true);
-
--- Allow authenticated users to INSERT their own votes
-CREATE POLICY "insert_spotlight_votes_authenticated" ON public.spotlight_votes
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (user_id = auth.uid()::text OR user_id IS NOT NULL);
-
--- Allow users to DELETE their own votes
-CREATE POLICY "delete_spotlight_votes_owner" ON public.spotlight_votes
-  FOR DELETE
-  TO authenticated
-  USING (user_id = auth.uid()::text);
-
 -- 6) Optional: seed initial data if needed
 -- INSERT INTO public.spotlight_votes (student_spotlight_id, user_id) 
 -- VALUES (UUID, 'user-id') ON CONFLICT DO NOTHING;

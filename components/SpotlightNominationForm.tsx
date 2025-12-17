@@ -111,8 +111,12 @@ const SpotlightNominationForm: React.FC<SpotlightNominationFormProps> = ({ onSub
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted', formData);
 
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      console.log('Form validation failed', errors);
+      return;
+    }
 
     try {
       setIsUploading(true);
@@ -120,15 +124,19 @@ const SpotlightNominationForm: React.FC<SpotlightNominationFormProps> = ({ onSub
 
       // Upload image if new file selected
       if (imageFile) {
-        const uploadedUrl = await storageService.uploadImage(imageFile, 'spotlight-nominations');
+        console.log('Uploading image...');
+        const uploadedUrl = await storageService.uploadImage(imageFile, 'news', 'spotlight-nominations');
         imageUrl = uploadedUrl;
+        console.log('Image uploaded:', imageUrl);
       }
 
+      console.log('Calling onSubmit with data:', { ...formData, imageUrl });
       await onSubmit({
         ...formData,
         imageUrl,
       });
     } catch (error) {
+      console.error('Error in handleSubmit:', error);
       setErrors(prev => ({ ...prev, submit: error instanceof Error ? error.message : 'Failed to submit nomination' }));
     } finally {
       setIsUploading(false);
@@ -449,6 +457,10 @@ const SpotlightNominationForm: React.FC<SpotlightNominationFormProps> = ({ onSub
           </button>
           <button
             type="submit"
+            onClick={(e) => {
+              console.log('Button clicked!');
+              handleSubmit(e as any);
+            }}
             disabled={isSubmitting || isUploading}
             className="flex-1 px-6 py-3 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
